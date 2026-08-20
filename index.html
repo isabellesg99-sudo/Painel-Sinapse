@@ -36,22 +36,14 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-  <!-- ================= TELA DE LOGIN CENTRALIZADA & ELEGANTE ================= -->
+  <!-- ================= TELA DE LOGIN ================= -->
   <div id="telaLogin" class="fixed inset-0 bg-[#F8FAFC] flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
-    
     <div class="w-full max-w-md bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 relative">
       
-      <!-- Topo: Logo & Branding -->
+      <!-- Topo com a Logo Redonda Oficial -->
       <div class="flex flex-col items-center text-center mb-7">
-        <div class="h-14 w-14 rounded-2xl bg-slate-50 border border-slate-100 p-2 flex items-center justify-center shadow-sm mb-3.5">
-          <svg viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="14" fill="#C81B73" />
-            <circle cx="25" cy="30" r="7" fill="#204596" />
-            <circle cx="75" cy="30" r="7" fill="#C81B73" />
-            <circle cx="25" cy="70" r="7" fill="#C81B73" />
-            <circle cx="75" cy="70" r="7" fill="#204596" />
-            <path d="M50 50 L25 30 M50 50 L75 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
-          </svg>
+        <div class="h-20 w-20 rounded-full overflow-hidden border-2 border-slate-100 shadow-md mb-3 flex items-center justify-center bg-white">
+          <img src="./1000732534.jpg" onerror="this.onerror=null; this.src='./logo.png'; if(!this.complete) this.src='./logo.jpg';" alt="Logo Sinapse" class="w-full h-full object-cover" />
         </div>
         <h2 class="text-2xl font-black text-slate-900 tracking-tight">Login</h2>
         <p class="text-xs text-slate-500 mt-1">Entre com seu e-mail e senha para acessar sua conta</p>
@@ -76,8 +68,8 @@
           </div>
           <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs cursor-pointer hover:border-sinapse-magenta transition-all" onclick="preencherLogin()">
             <div class="flex items-center gap-2.5">
-              <div class="h-7 w-7 rounded-full bg-emerald-100 text-emerald-700 font-black text-[10px] flex items-center justify-center">
-                GS
+              <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+                <img src="./1000732534.jpg" onerror="this.onerror=null; this.src='./logo.png'; if(!this.complete) this.src='./logo.jpg';" alt="GS" class="w-full h-full object-cover" />
               </div>
               <div class="leading-tight">
                 <p class="text-xs font-bold text-slate-800">Gestor Sinapse</p>
@@ -114,39 +106,27 @@
   <!-- ================= DASHBOARD DO SISTEMA ================= -->
   <div id="painelSistema" class="hidden min-h-screen bg-slate-50 flex-col md:flex-row w-full">
     
-    <!-- Sidebar Retrátil -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
-
-    <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-4 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200">
-      <div>
-        <div class="flex items-center gap-3 px-2 py-3 mb-6 border-b border-slate-100">
-          <div class="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200/80 p-1 flex items-center justify-center shadow-xs">
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-              <circle cx="50" cy="50" r="14" fill="#C81B73" />
-              <circle cx="25" cy="30" r="7" fill="#204596" />
-              <circle cx="75" cy="30" r="7" fill="#C81B73" />
-              <circle cx="25" cy="70" r="7" fill="#C81B73" />
-              <circle cx="75" cy="70" r="7" fill="#204596" />
-              <path d="M50 50 L25 30 M50 50 L75 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
-            </svg>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-slate-200 p-4 flex flex-col justify-between hidden md:flex min-h-screen">
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 px-2">
+          <div class="h-9 w-9 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+            <img src="./1000732534.jpg" onerror="this.onerror=null; this.src='./logo.png'; if(!this.complete) this.src='./logo.jpg';" alt="Sinapse" class="w-full h-full object-cover" />
           </div>
           <div>
-            <h1 class="text-sm font-black text-slate-900 tracking-tight leading-none">SINAPSE</h1>
-            <span class="text-[9px] text-sinapse-magenta font-bold tracking-wider uppercase">Inteligência Comercial</span>
+            <h1 class="text-sm font-black text-slate-900 leading-none">SINAPSE</h1>
+            <span class="text-[9px] text-sinapse-magenta font-bold">Gestão & CRM</span>
           </div>
         </div>
 
         <nav class="space-y-1 text-xs font-semibold">
-          <button onclick="navegarPara('home')" id="btnNav-home" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-slate-100 text-slate-900 transition-colors">
-            <i class="fa-solid fa-chart-pie text-sm text-sinapse-magenta"></i>
-            <span>Dashboard</span>
+          <button onclick="navegarPara('home')" id="btnNav-home" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-100 text-slate-900">
+            <i class="fa-solid fa-chart-pie text-sinapse-magenta"></i> Dashboard
           </button>
-
           <div>
-            <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+            <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
               <div class="flex items-center gap-3">
-                <i class="fa-solid fa-bullhorn text-sm text-slate-400"></i>
-                <span>Marketing & CRM</span>
+                <i class="fa-solid fa-bullhorn text-slate-400"></i> Marketing & CRM
               </div>
               <i id="setaMarketing" class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform"></i>
             </button>
@@ -159,139 +139,99 @@
               </button>
             </div>
           </div>
-
-          <button onclick="navegarPara('chat-live')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-            <i class="fa-solid fa-comments text-sm text-sinapse-blue"></i>
-            <span>Chat Live</span>
-            <span class="ml-auto bg-emerald-50 text-emerald-600 border border-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-bold">Online</span>
+          <button onclick="navegarPara('chat-live')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50">
+            <i class="fa-solid fa-comments text-sinapse-blue"></i> Chat Live
           </button>
         </nav>
       </div>
 
-      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="h-8 w-8 rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center justify-center">GS</div>
-          <div class="leading-tight">
-            <p class="text-xs font-bold text-slate-800">Gestor</p>
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+            <img src="./1000732534.jpg" onerror="this.onerror=null; this.src='./logo.png'; if(!this.complete) this.src='./logo.jpg';" alt="Gestor" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <p class="font-bold text-slate-800">Gestor</p>
             <span class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
           </div>
         </div>
-        <button onclick="fazerLogout()" title="Sair" class="text-slate-400 hover:text-rose-500 p-1"><i class="fa-solid fa-arrow-right-from-bracket text-xs"></i></button>
+        <button onclick="fazerLogout()" class="text-slate-400 hover:text-rose-500"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
       </div>
     </aside>
 
-    <!-- Conteúdo Central -->
-    <div class="flex-1 flex flex-col min-h-screen overflow-y-auto">
-      
-      <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-3.5 flex items-center justify-between z-20">
-        <div class="flex items-center gap-3">
-          <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-slate-900"><i class="fa-solid fa-bars text-base"></i></button>
-          <h2 id="tituloPagina" class="text-sm md:text-base font-bold text-slate-900">Dashboard Principal</h2>
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div>
+          <h2 id="tituloPagina" class="text-xl font-bold text-slate-900">Dashboard</h2>
+          <p class="text-xs text-slate-500">Visão geral do desempenho comercial</p>
         </div>
-
-        <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">
+        <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
           <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          WhatsApp Oficial: <strong>+55 61 9829-0749</strong>
+          WhatsApp Conectado
         </div>
-      </header>
+      </div>
 
-      <main class="p-4 md:p-8 space-y-6 max-w-6xl w-full mx-auto flex-1">
-        
-        <!-- DASHBOARD HOME -->
-        <section id="view-home" class="space-y-6 block">
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <span class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-                <i class="fa-regular fa-calendar text-sinapse-magenta"></i> Visão Diária Operacional
-              </span>
-              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">Olá, Gestor 👋</h3>
-              <p class="text-xs text-slate-500">Acompanhamento das ativações e oportunidades.</p>
-            </div>
-            <div class="flex gap-2">
-              <button onclick="navegarPara('base-leads')" class="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 shadow-xs">
-                <i class="fa-solid fa-users text-slate-400 mr-1.5"></i> Leads
-              </button>
-              <button onclick="navegarPara('crm-kanban')" class="px-4 py-2 bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white rounded-xl text-xs font-bold shadow-sm shadow-sinapse-magenta/30 hover:opacity-95">
-                <i class="fa-solid fa-chart-simple mr-1.5"></i> Abrir Funil ↗
-              </button>
+      <!-- ABA HOME -->
+      <section id="view-home" class="space-y-6 block">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase text-slate-400">Total de Leads</span>
+            <p class="text-3xl font-black text-slate-900 mt-1">0</p>
+            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2">+0 hoje</span>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase text-slate-400">Vendas Fechadas</span>
+            <p class="text-3xl font-black text-slate-900 mt-1">0</p>
+            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-2">0.0% conversão</span>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase text-slate-400">Receita</span>
+            <p class="text-3xl font-black text-slate-900 mt-1">R$ 0,00</p>
+            <span class="text-[10px] font-semibold text-slate-400 block mt-2">Acumulado do mês</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <h4 class="font-bold text-sm text-slate-900 mb-3">Desempenho Comercial</h4>
+            <div class="h-56 w-full"><canvas id="graficoLinha"></canvas></div>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+            <h4 class="font-bold text-sm text-slate-900 mb-3">Canais de Aquisição</h4>
+            <div class="h-44 w-full flex items-center justify-center my-auto"><canvas id="graficoRosca"></canvas></div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</span>
+              <span class="font-bold text-slate-900">100%</span>
             </div>
           </div>
+        </div>
+      </section>
 
-          <!-- Cards Métricas -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-              <span class="text-[11px] font-bold uppercase text-slate-400">Total de Leads</span>
-              <p class="text-2xl font-black text-slate-900 mt-1">0</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2">+0 hoje</span>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-              <span class="text-[11px] font-bold uppercase text-slate-400">Vendas Fechadas</span>
-              <p class="text-2xl font-black text-slate-900 mt-1">0</p>
-              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-2">0.0% conversão</span>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-              <span class="text-[11px] font-bold uppercase text-slate-400">Receita Estimada</span>
-              <p class="text-2xl font-black text-slate-900 mt-1">R$ 0,00</p>
-              <span class="text-[10px] font-semibold text-slate-400 block mt-2">Acumulado do mês</span>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-              <span class="text-[11px] font-bold uppercase text-slate-400">Leads no Kanban</span>
-              <p class="text-2xl font-black text-slate-900 mt-1">0</p>
-              <span class="text-[10px] font-semibold text-slate-400 block mt-2">Oportunidades ativas</span>
-            </div>
-          </div>
+      <!-- ABA BASE LEADS -->
+      <section id="view-base-leads" class="space-y-6 hidden">
+        <h3 class="text-xl font-bold text-slate-900">Base de Leads</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Nenhum contato cadastrado no momento.
+        </div>
+      </section>
 
-          <!-- Gráficos -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-              <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-                <h4 class="font-bold text-sm text-slate-900">Desempenho Comercial</h4>
-                <div class="flex bg-slate-100 p-1 rounded-xl text-[11px] font-semibold">
-                  <button class="px-2.5 py-1 rounded-lg bg-white text-slate-900 shadow-xs">12 meses</button>
-                </div>
-              </div>
-              <div class="h-56 w-full"><canvas id="graficoLinha"></canvas></div>
-            </div>
+      <!-- ABA CRM KANBAN -->
+      <section id="view-crm-kanban" class="space-y-6 hidden">
+        <h3 class="text-xl font-bold text-slate-900">Funil de Vendas CRM</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Funil Kanban pronto para novos leads.
+        </div>
+      </section>
 
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-              <div class="pb-3 border-b border-slate-100">
-                <h4 class="font-bold text-sm text-slate-900">Canais de Aquisição</h4>
-              </div>
-              <div class="h-44 w-full flex items-center justify-center my-auto"><canvas id="graficoRosca"></canvas></div>
-              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="flex items-center gap-1.5 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</span>
-                <span class="font-bold text-slate-900">100%</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ABA BASE LEADS -->
-        <section id="view-base-leads" class="space-y-6 hidden">
-          <h3 class="text-xl font-bold text-slate-900">Base de Leads</h3>
-          <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-            Nenhum contato cadastrado no momento.
-          </div>
-        </section>
-
-        <!-- ABA CRM KANBAN -->
-        <section id="view-crm-kanban" class="space-y-6 hidden">
-          <h3 class="text-xl font-bold text-slate-900">Funil de Vendas CRM</h3>
-          <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-            Funil Kanban pronto para novos leads.
-          </div>
-        </section>
-
-        <!-- ABA LIVE CHAT -->
-        <section id="view-chat-live" class="space-y-6 hidden">
-          <h3 class="text-xl font-bold text-slate-900">Live Chat WhatsApp</h3>
-          <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-            Nenhuma conversa ativa no canal WhatsApp.
-          </div>
-        </section>
-
-      </main>
-    </div>
+      <!-- ABA LIVE CHAT -->
+      <section id="view-chat-live" class="space-y-6 hidden">
+        <h3 class="text-xl font-bold text-slate-900">Live Chat WhatsApp</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Nenhuma conversa ativa no canal WhatsApp.
+        </div>
+      </section>
+    </main>
   </div>
 
   <script>
@@ -320,7 +260,7 @@
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        msgErro.innerText = 'E-mail ou senha inválidos.';
+        msgErro.innerText = 'E-mail ou senha incorretos.';
         msgErro.classList.remove('hidden');
         btn.innerText = 'Entrar';
         btn.disabled = false;
@@ -339,20 +279,12 @@
       document.getElementById('telaLogin').classList.remove('hidden');
     }
 
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('-translate-x-full');
-      document.getElementById('sidebarOverlay').classList.toggle('hidden');
-    }
-
     function toggleMarketingMenu() {
       document.getElementById('submenuMarketing').classList.toggle('hidden');
       document.getElementById('setaMarketing').classList.toggle('rotate-180');
     }
 
     function navegarPara(view) {
-      document.getElementById('sidebar').classList.add('-translate-x-full');
-      document.getElementById('sidebarOverlay').classList.add('hidden');
-
       ['home', 'base-leads', 'crm-kanban', 'chat-live'].forEach(id => {
         document.getElementById(`view-${id}`).classList.add('hidden');
         document.getElementById(`view-${id}`).classList.remove('block');
@@ -375,4 +307,48 @@
       chartLinha = new Chart(ctxLinha, {
         type: 'line',
         data: {
-          labels:
+          labels: ['Set', 'Out', 'Nov', 'Dez', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+          datasets: [{
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            borderColor: '#C81B73',
+            backgroundColor: 'rgba(200, 27, 115, 0.05)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+            pointBackgroundColor: '#C81B73'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { size: 10 } } },
+            y: { grid: { color: '#F1F5F9' }, ticks: { color: '#94A3B8', font: { size: 10 } }, beginAtZero: true }
+          }
+        }
+      });
+
+      const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
+      chartRosca = new Chart(ctxRosca, {
+        type: 'doughnut',
+        data: {
+          labels: ['WhatsApp'],
+          datasets: [{
+            data: [100],
+            backgroundColor: ['#10B981'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '75%',
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
