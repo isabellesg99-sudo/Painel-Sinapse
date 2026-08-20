@@ -32,6 +32,9 @@
     ::-webkit-scrollbar-track { background: #F8FAFC; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+    .logo-sinapse-original {
+      background: radial-gradient(circle at 30% 30%, #204596 0%, #C81B73 60%, #8C1D74 100%);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
@@ -40,45 +43,55 @@
   <div id="telaLogin" class="fixed inset-0 bg-[#F8FAFC] flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
     <div class="w-full max-w-md bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 relative">
       
-      <!-- Topo com a Logo Redonda Oficial em Vetor HD -->
+      <!-- Topo com a Logo Original Fiel -->
       <div class="flex flex-col items-center text-center mb-7">
-        <div class="h-20 w-20 rounded-full overflow-hidden border-2 border-slate-100 shadow-md mb-3 flex items-center justify-center bg-white p-1">
-          <svg viewBox="0 0 200 200" class="w-full h-full">
+        <div class="h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-xl mb-3 flex items-center justify-center bg-white p-0.5">
+          <svg viewBox="0 0 500 500" class="w-full h-full">
             <defs>
-              <linearGradient id="sinapseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#204596" />
-                <stop offset="50%" stop-color="#C81B73" />
+              <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1e3a8a" />
+                <stop offset="35%" stop-color="#C81B73" />
                 <stop offset="100%" stop-color="#8C1D74" />
               </linearGradient>
             </defs>
-            <!-- Fundo circular suave -->
-            <circle cx="100" cy="100" r="96" fill="#ffffff" />
-            <!-- Braço Superior S -->
-            <path d="M100 20 C145 20 180 55 180 100 C180 115 170 120 160 110 C145 95 130 85 100 85 C65 85 50 105 35 125 C25 140 20 125 20 100 C20 55 55 20 100 20 Z" fill="url(#sinapseGrad)" opacity="0.95" />
-            <!-- Braço Inferior S -->
-            <path d="M100 180 C55 180 20 145 20 100 C20 85 30 80 40 90 C55 105 70 115 100 115 C135 115 150 95 165 75 C175 60 180 75 180 100 C180 145 145 180 100 180 Z" fill="url(#sinapseGrad)" opacity="0.95" />
-            <!-- Nó Central -->
-            <circle cx="100" cy="100" r="26" fill="#C81B73" />
-            <!-- Redes de Conexão Superiores -->
-            <line x1="100" y1="100" x2="125" y2="70" stroke="#C81B73" stroke-width="3" />
-            <line x1="125" y1="70" x2="155" y2="68" stroke="#C81B73" stroke-width="3" />
-            <line x1="125" y1="70" x2="140" y2="92" stroke="#C81B73" stroke-width="3" />
-            <line x1="155" y1="68" x2="172" y2="88" stroke="#C81B73" stroke-width="3" />
-            <circle cx="125" cy="70" r="8" fill="#C81B73" />
-            <circle cx="155" cy="68" r="6" fill="#C81B73" />
-            <circle cx="140" cy="92" r="5" fill="#C81B73" />
-            <circle cx="172" cy="88" r="9" fill="#C81B73" />
-            <!-- Redes de Conexão Inferiores -->
-            <line x1="100" y1="100" x2="75" y2="130" stroke="#C81B73" stroke-width="3" />
-            <line x1="75" y1="130" x2="45" y2="132" stroke="#C81B73" stroke-width="3" />
-            <line x1="75" y1="130" x2="60" y2="108" stroke="#C81B73" stroke-width="3" />
-            <line x1="45" y1="132" x2="28" y2="112" stroke="#C81B73" stroke-width="3" />
-            <circle cx="75" cy="130" r="8" fill="#C81B73" />
-            <circle cx="45" cy="132" r="6" fill="#C81B73" />
-            <circle cx="60" cy="108" r="5" fill="#C81B73" />
-            <circle cx="28" cy="112" r="9" fill="#C81B73" />
-            <!-- Texto Central -->
-            <text x="100" y="103" font-size="11" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1">SINAPSE</text>
+            <!-- Fundo Círculo Branco com borda -->
+            <circle cx="250" cy="250" r="240" fill="#ffffff"/>
+            
+            <!-- Braço S Superior com gradiente -->
+            <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="url(#bgGrad)"/>
+            
+            <!-- Braço S Inferior com gradiente -->
+            <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="url(#bgGrad)"/>
+            
+            <!-- Círculo Central Magenta -->
+            <circle cx="250" cy="250" r="65" fill="#C81B73"/>
+            <text x="250" y="258" font-family="'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">SINAPSE</text>
+            
+            <!-- Conexões e Nós Superiores -->
+            <g stroke="#C81B73" stroke-width="7" fill="#C81B73">
+              <line x1="250" y1="250" x2="310" y2="180" />
+              <line x1="310" y1="180" x2="385" y2="175" />
+              <line x1="310" y1="180" x2="350" y2="235" />
+              <line x1="385" y1="175" x2="430" y2="225" />
+              <line x1="350" y1="235" x2="430" y2="225" />
+              <circle cx="310" cy="180" r="18" />
+              <circle cx="385" cy="175" r="14" />
+              <circle cx="350" cy="235" r="12" />
+              <circle cx="430" cy="225" r="22" />
+            </g>
+
+            <!-- Conexões e Nós Inferiores -->
+            <g stroke="#C81B73" stroke-width="7" fill="#C81B73">
+              <line x1="250" y1="250" x2="190" y2="320" />
+              <line x1="190" y1="320" x2="115" y2="325" />
+              <line x1="190" y1="320" x2="150" y2="265" />
+              <line x1="115" y1="325" x2="70" y2="275" />
+              <line x1="150" y1="265" x2="70" y2="275" />
+              <circle cx="190" cy="320" r="18" />
+              <circle cx="115" cy="325" r="14" />
+              <circle cx="150" cy="265" r="12" />
+              <circle cx="70" cy="275" r="22" />
+            </g>
           </svg>
         </div>
         <h2 class="text-2xl font-black text-slate-900 tracking-tight">Login</h2>
@@ -96,7 +109,7 @@
           </div>
         </div>
 
-        <!-- Acessos Recentes -->
+        <!-- Acessos Recentes com Miniatura Perfeita -->
         <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
           <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">
             <span>Acessos Recentes</span>
@@ -104,13 +117,13 @@
           </div>
           <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs cursor-pointer hover:border-sinapse-magenta transition-all" onclick="preencherLogin()">
             <div class="flex items-center gap-2.5">
-              <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 flex items-center justify-center p-0.5 bg-white flex-shrink-0">
-                <svg viewBox="0 0 200 200" class="w-full h-full">
-                  <circle cx="100" cy="100" r="96" fill="#ffffff" />
-                  <path d="M100 20 C145 20 180 55 180 100 C180 115 170 120 160 110 C145 95 130 85 100 85 C65 85 50 105 35 125 C25 140 20 125 20 100 C20 55 55 20 100 20 Z" fill="#C81B73" />
-                  <path d="M100 180 C55 180 20 145 20 100 C20 85 30 80 40 90 C55 105 70 115 100 115 C135 115 150 95 165 75 C175 60 180 75 180 100 C180 145 145 180 100 180 Z" fill="#204596" />
-                  <circle cx="100" cy="100" r="26" fill="#C81B73" />
-                  <text x="100" y="104" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
+              <div class="h-9 w-9 rounded-full overflow-hidden border border-slate-200 flex items-center justify-center p-0.5 bg-white flex-shrink-0">
+                <svg viewBox="0 0 500 500" class="w-full h-full">
+                  <circle cx="250" cy="250" r="240" fill="#ffffff"/>
+                  <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
+                  <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
+                  <circle cx="250" cy="250" r="70" fill="#C81B73"/>
+                  <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
                 </svg>
               </div>
               <div class="leading-tight">
@@ -152,18 +165,18 @@
     <aside class="w-64 bg-white border-r border-slate-200 p-4 flex flex-col justify-between hidden md:flex min-h-screen">
       <div class="space-y-6">
         <div class="flex items-center gap-3 px-2">
-          <div class="h-9 w-9 rounded-full overflow-hidden border border-slate-200 p-0.5 flex items-center justify-center bg-white flex-shrink-0">
-            <svg viewBox="0 0 200 200" class="w-full h-full">
-              <circle cx="100" cy="100" r="96" fill="#ffffff" />
-              <path d="M100 20 C145 20 180 55 180 100 C180 115 170 120 160 110 C145 95 130 85 100 85 C65 85 50 105 35 125 C25 140 20 125 20 100 C20 55 55 20 100 20 Z" fill="#C81B73" />
-              <path d="M100 180 C55 180 20 145 20 100 C20 85 30 80 40 90 C55 105 70 115 100 115 C135 115 150 95 165 75 C175 60 180 75 180 100 C180 145 145 180 100 180 Z" fill="#204596" />
-              <circle cx="100" cy="100" r="26" fill="#C81B73" />
-              <text x="100" y="104" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
+          <div class="h-10 w-10 rounded-full overflow-hidden border border-slate-200 p-0.5 flex items-center justify-center bg-white flex-shrink-0">
+            <svg viewBox="0 0 500 500" class="w-full h-full">
+              <circle cx="250" cy="250" r="240" fill="#ffffff"/>
+              <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
+              <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
+              <circle cx="250" cy="250" r="70" fill="#C81B73"/>
+              <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
             </svg>
           </div>
           <div>
             <h1 class="text-sm font-black text-slate-900 leading-none">SINAPSE</h1>
-            <span class="text-[9px] text-sinapse-magenta font-bold">Gestão & CRM</span>
+            <span class="text-[9px] text-sinapse-magenta font-bold tracking-wider uppercase">Gestão & CRM</span>
           </div>
         </div>
 
@@ -196,12 +209,12 @@
       <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
         <div class="flex items-center gap-2">
           <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 p-0.5 flex items-center justify-center bg-white flex-shrink-0">
-            <svg viewBox="0 0 200 200" class="w-full h-full">
-              <circle cx="100" cy="100" r="96" fill="#ffffff" />
-              <path d="M100 20 C145 20 180 55 180 100 C180 115 170 120 160 110 C145 95 130 85 100 85 C65 85 50 105 35 125 C25 140 20 125 20 100 C20 55 55 20 100 20 Z" fill="#C81B73" />
-              <path d="M100 180 C55 180 20 145 20 100 C20 85 30 80 40 90 C55 105 70 115 100 115 C135 115 150 95 165 75 C175 60 180 75 180 100 C180 145 145 180 100 180 Z" fill="#204596" />
-              <circle cx="100" cy="100" r="26" fill="#C81B73" />
-              <text x="100" y="104" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
+            <svg viewBox="0 0 500 500" class="w-full h-full">
+              <circle cx="250" cy="250" r="240" fill="#ffffff"/>
+              <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
+              <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
+              <circle cx="250" cy="250" r="70" fill="#C81B73"/>
+              <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
             </svg>
           </div>
           <div>
@@ -348,13 +361,4 @@
       document.getElementById(`view-${view}`).classList.add('block');
 
       const titulos = {
-        'home': 'Dashboard Principal',
-        'base-leads': 'Marketing > Base de Leads',
-        'crm-kanban': 'Marketing > Funil de Vendas (CRM)',
-        'chat-live': 'Live Chat WhatsApp'
-      };
-      document.getElementById('tituloPagina').innerText = titulos[view];
-    }
-
-    function inicializarGraficos() {
-      co
+        'home': 'Dashboard Pr
