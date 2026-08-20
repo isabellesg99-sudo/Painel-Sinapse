@@ -3,362 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sinapse Gestão - Central de Inteligência</title>
+  <title>Painel Sinapse</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            sinapse: {
-              magenta: '#C81B73',
-              purple: '#8C1D74',
-              blue: '#204596',
-              surface: '#F8FAFC',
-              card: '#FFFFFF',
-              border: '#E2E8F0'
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body { background-color: #F8FAFC; color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #F8FAFC; }
-    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-    .logo-sinapse-original {
-      background: radial-gradient(circle at 30% 30%, #204596 0%, #C81B73 60%, #8C1D74 100%);
-    }
-  </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
-
-  <!-- ================= TELA DE LOGIN ================= -->
-  <div id="telaLogin" class="fixed inset-0 bg-[#F8FAFC] flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
-    <div class="w-full max-w-md bg-white border border-slate-200/80 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 relative">
-      
-      <!-- Topo com a Logo Original Fiel -->
-      <div class="flex flex-col items-center text-center mb-7">
-        <div class="h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-xl mb-3 flex items-center justify-center bg-white p-0.5">
-          <svg viewBox="0 0 500 500" class="w-full h-full">
-            <defs>
-              <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1e3a8a" />
-                <stop offset="35%" stop-color="#C81B73" />
-                <stop offset="100%" stop-color="#8C1D74" />
-              </linearGradient>
-            </defs>
-            <!-- Fundo Círculo Branco com borda -->
-            <circle cx="250" cy="250" r="240" fill="#ffffff"/>
-            
-            <!-- Braço S Superior com gradiente -->
-            <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="url(#bgGrad)"/>
-            
-            <!-- Braço S Inferior com gradiente -->
-            <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="url(#bgGrad)"/>
-            
-            <!-- Círculo Central Magenta -->
-            <circle cx="250" cy="250" r="65" fill="#C81B73"/>
-            <text x="250" y="258" font-family="'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">SINAPSE</text>
-            
-            <!-- Conexões e Nós Superiores -->
-            <g stroke="#C81B73" stroke-width="7" fill="#C81B73">
-              <line x1="250" y1="250" x2="310" y2="180" />
-              <line x1="310" y1="180" x2="385" y2="175" />
-              <line x1="310" y1="180" x2="350" y2="235" />
-              <line x1="385" y1="175" x2="430" y2="225" />
-              <line x1="350" y1="235" x2="430" y2="225" />
-              <circle cx="310" cy="180" r="18" />
-              <circle cx="385" cy="175" r="14" />
-              <circle cx="350" cy="235" r="12" />
-              <circle cx="430" cy="225" r="22" />
-            </g>
-
-            <!-- Conexões e Nós Inferiores -->
-            <g stroke="#C81B73" stroke-width="7" fill="#C81B73">
-              <line x1="250" y1="250" x2="190" y2="320" />
-              <line x1="190" y1="320" x2="115" y2="325" />
-              <line x1="190" y1="320" x2="150" y2="265" />
-              <line x1="115" y1="325" x2="70" y2="275" />
-              <line x1="150" y1="265" x2="70" y2="275" />
-              <circle cx="190" cy="320" r="18" />
-              <circle cx="115" cy="325" r="14" />
-              <circle cx="150" cy="265" r="12" />
-              <circle cx="70" cy="275" r="22" />
-            </g>
-          </svg>
-        </div>
-        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Login</h2>
-        <p class="text-xs text-slate-500 mt-1">Entre com seu e-mail e senha para acessar sua conta</p>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-6">
+  <header class="w-full max-w-4xl flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30">
+        S
       </div>
-
-      <form onsubmit="fazerLogin(event)" class="space-y-4 text-xs">
-        <div id="msgErro" class="hidden p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-center font-semibold"></div>
-
-        <div>
-          <label class="block text-slate-700 font-bold mb-1.5">E-mail<span class="text-rose-500">*</span></label>
-          <div class="relative">
-            <i class="fa-solid fa-at absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-            <input type="email" id="loginEmail" value="sinapsegestao@gmail.com" required placeholder="sinapsegestao@gmail.com" class="w-full bg-slate-50/70 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-sinapse-magenta focus:bg-white transition-all text-xs" />
-          </div>
-        </div>
-
-        <!-- Acessos Recentes com Miniatura Perfeita -->
-        <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
-          <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">
-            <span>Acessos Recentes</span>
-            <span class="font-normal lowercase">Este dispositivo</span>
-          </div>
-          <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs cursor-pointer hover:border-sinapse-magenta transition-all" onclick="preencherLogin()">
-            <div class="flex items-center gap-2.5">
-              <div class="h-9 w-9 rounded-full overflow-hidden border border-slate-200 flex items-center justify-center p-0.5 bg-white flex-shrink-0">
-                <svg viewBox="0 0 500 500" class="w-full h-full">
-                  <circle cx="250" cy="250" r="240" fill="#ffffff"/>
-                  <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
-                  <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
-                  <circle cx="250" cy="250" r="70" fill="#C81B73"/>
-                  <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
-                </svg>
-              </div>
-              <div class="leading-tight">
-                <p class="text-xs font-bold text-slate-800">Gestor Sinapse</p>
-                <span class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-slate-700 font-bold mb-1.5">Senha<span class="text-rose-500">*</span></label>
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-            <input type="password" id="loginSenha" value="SinapseGestao2016" required placeholder="••••••••" class="w-full bg-slate-50/70 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-sinapse-magenta focus:bg-white transition-all text-xs" />
-          </div>
-        </div>
-
-        <button type="submit" id="btnEntrar" class="w-full py-3 rounded-xl bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white font-bold text-xs shadow-md shadow-sinapse-magenta/25 hover:opacity-95 transition-opacity">
-          Entrar
-        </button>
-
-        <div class="text-left pt-1">
-          <a href="#" class="text-[11px] font-semibold text-sinapse-magenta hover:underline">Esqueci a senha</a>
-        </div>
-      </form>
-      
-      <div class="text-center text-[10px] text-slate-400 mt-8 pt-4 border-t border-slate-100">
-        &copy; 2026 Sinapse Gestão & Inteligência. Todos os direitos reservados.
+      <div>
+        <h1 class="text-xl font-bold tracking-tight">Painel Sinapse</h1>
+        <p class="text-xs text-slate-400">Gestão de Disparos & Alunos</p>
       </div>
     </div>
-  </div>
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      Sistema Operacional
+    </span>
+  </header>
 
-  <!-- ================= DASHBOARD DO SISTEMA ================= -->
-  <div id="painelSistema" class="hidden min-h-screen bg-slate-50 flex-col md:flex-row w-full">
-    
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-slate-200 p-4 flex flex-col justify-between hidden md:flex min-h-screen">
-      <div class="space-y-6">
-        <div class="flex items-center gap-3 px-2">
-          <div class="h-10 w-10 rounded-full overflow-hidden border border-slate-200 p-0.5 flex items-center justify-center bg-white flex-shrink-0">
-            <svg viewBox="0 0 500 500" class="w-full h-full">
-              <circle cx="250" cy="250" r="240" fill="#ffffff"/>
-              <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
-              <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
-              <circle cx="250" cy="250" r="70" fill="#C81B73"/>
-              <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
-            </svg>
-          </div>
-          <div>
-            <h1 class="text-sm font-black text-slate-900 leading-none">SINAPSE</h1>
-            <span class="text-[9px] text-sinapse-magenta font-bold tracking-wider uppercase">Gestão & CRM</span>
-          </div>
-        </div>
+  <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Total de Alunos</h2>
+      <p id="totalAlunos" class="text-3xl font-extrabold text-white">0</p>
+    </div>
 
-        <nav class="space-y-1 text-xs font-semibold">
-          <button onclick="navegarPara('home')" id="btnNav-home" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-100 text-slate-900">
-            <i class="fa-solid fa-chart-pie text-sinapse-magenta"></i> Dashboard
-          </button>
-          <div>
-            <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-bullhorn text-slate-400"></i> Marketing & CRM
-              </div>
-              <i id="setaMarketing" class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform"></i>
-            </button>
-            <div id="submenuMarketing" class="pl-8 pr-2 py-1 space-y-1">
-              <button onclick="navegarPara('base-leads')" class="w-full text-left py-1.5 px-2.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
-                Base de Leads
-              </button>
-              <button onclick="navegarPara('crm-kanban')" class="w-full text-left py-1.5 px-2.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
-                Funil de Vendas (CRM)
-              </button>
-            </div>
-          </div>
-          <button onclick="navegarPara('chat-live')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50">
-            <i class="fa-solid fa-comments text-sinapse-blue"></i> Chat Live
-          </button>
-        </nav>
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Disparos Hoje</h2>
+      <p id="disparosHoje" class="text-3xl font-extrabold text-indigo-400">0</p>
+    </div>
+
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Status do Canal</h2>
+      <p class="text-base font-semibold text-emerald-400 flex items-center gap-2 mt-1">
+        WhatsApp Oficial Ativo
+      </p>
+    </div>
+
+    <section class="md:col-span-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-lg text-slate-200">Fila de Disparo</h3>
+        <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30">
+          + Novo Envio
+        </button>
       </div>
 
-      <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-        <div class="flex items-center gap-2">
-          <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 p-0.5 flex items-center justify-center bg-white flex-shrink-0">
-            <svg viewBox="0 0 500 500" class="w-full h-full">
-              <circle cx="250" cy="250" r="240" fill="#ffffff"/>
-              <path d="M 250,30 C 370,30 465,125 465,245 C 465,285 435,310 405,280 C 365,240 330,215 250,215 C 160,215 125,270 85,320 C 60,355 45,320 45,250 C 45,130 135,30 250,30 Z" fill="#C81B73"/>
-              <path d="M 250,470 C 130,470 35,375 35,255 C 35,215 65,190 95,220 C 135,260 170,285 250,285 C 340,285 375,230 415,180 C 440,145 455,180 455,250 C 455,370 365,470 250,470 Z" fill="#204596"/>
-              <circle cx="250" cy="250" r="70" fill="#C81B73"/>
-              <text x="250" y="265" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">S</text>
-            </svg>
-          </div>
-          <div>
-            <p class="font-bold text-slate-800">Gestor</p>
-            <span class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
-          </div>
-        </div>
-        <button onclick="fazerLogout()" class="text-slate-400 hover:text-rose-500"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-slate-300">
+          <thead class="text-xs uppercase bg-slate-800/50 text-slate-400">
+            <tr>
+              <th class="px-4 py-3 rounded-l-lg">Nome</th>
+              <th class="px-4 py-3">Telefone</th>
+              <th class="px-4 py-3">Curso / Assunto</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3 rounded-r-lg text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaCorpo" class="divide-y divide-slate-800">
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                Nenhum disparo na fila no momento.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </aside>
+    </section>
+  </main>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-        <div>
-          <h2 id="tituloPagina" class="text-xl font-bold text-slate-900">Dashboard</h2>
-          <p class="text-xs text-slate-500">Visão geral do desempenho comercial</p>
-        </div>
-        <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
-          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          WhatsApp Conectado
-        </div>
-      </div>
-
-      <!-- ABA HOME -->
-      <section id="view-home" class="space-y-6 block">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <span class="text-xs font-bold uppercase text-slate-400">Total de Leads</span>
-            <p class="text-3xl font-black text-slate-900 mt-1">0</p>
-            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2">+0 hoje</span>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <span class="text-xs font-bold uppercase text-slate-400">Vendas Fechadas</span>
-            <p class="text-3xl font-black text-slate-900 mt-1">0</p>
-            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-2">0.0% conversão</span>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <span class="text-xs font-bold uppercase text-slate-400">Receita</span>
-            <p class="text-3xl font-black text-slate-900 mt-1">R$ 0,00</p>
-            <span class="text-[10px] font-semibold text-slate-400 block mt-2">Acumulado do mês</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <h4 class="font-bold text-sm text-slate-900 mb-3">Desempenho Comercial</h4>
-            <div class="h-56 w-full"><canvas id="graficoLinha"></canvas></div>
-          </div>
-          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-            <h4 class="font-bold text-sm text-slate-900 mb-3">Canais de Aquisição</h4>
-            <div class="h-44 w-full flex items-center justify-center my-auto"><canvas id="graficoRosca"></canvas></div>
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span class="flex items-center gap-1.5 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</span>
-              <span class="font-bold text-slate-900">100%</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA BASE LEADS -->
-      <section id="view-base-leads" class="space-y-6 hidden">
-        <h3 class="text-xl font-bold text-slate-900">Base de Leads</h3>
-        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-          Nenhum contato cadastrado no momento.
-        </div>
-      </section>
-
-      <!-- ABA CRM KANBAN -->
-      <section id="view-crm-kanban" class="space-y-6 hidden">
-        <h3 class="text-xl font-bold text-slate-900">Funil de Vendas CRM</h3>
-        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-          Funil Kanban pronto para novos leads.
-        </div>
-      </section>
-
-      <!-- ABA LIVE CHAT -->
-      <section id="view-chat-live" class="space-y-6 hidden">
-        <h3 class="text-xl font-bold text-slate-900">Live Chat WhatsApp</h3>
-        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
-          Nenhuma conversa ativa no canal WhatsApp.
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <script>
-    const SUPABASE_URL = 'https://foyoweffnxccsatmfofb.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_34zjc5BFOXBtVfFktJeUDw_ouLbLHWW';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let chartLinha, chartRosca;
-
-    function preencherLogin() {
-      document.getElementById('loginEmail').value = 'sinapsegestao@gmail.com';
-      document.getElementById('loginSenha').value = 'SinapseGestao2016';
-    }
-
-    async function fazerLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginSenha').value;
-      const btn = document.getElementById('btnEntrar');
-      const msgErro = document.getElementById('msgErro');
-
-      btn.innerText = 'Entrando...';
-      btn.disabled = true;
-      msgErro.classList.add('hidden');
-
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        msgErro.innerText = 'E-mail ou senha incorretos.';
-        msgErro.classList.remove('hidden');
-        btn.innerText = 'Entrar';
-        btn.disabled = false;
-      } else {
-        document.getElementById('telaLogin').classList.add('hidden');
-        document.getElementById('painelSistema').classList.remove('hidden');
-        document.getElementById('painelSistema').classList.add('flex');
-        inicializarGraficos();
-      }
-    }
-
-    async function fazerLogout() {
-      await supabase.auth.signOut();
-      document.getElementById('painelSistema').classList.add('hidden');
-      document.getElementById('painelSistema').classList.remove('flex');
-      document.getElementById('telaLogin').classList.remove('hidden');
-    }
-
-    function toggleMarketingMenu() {
-      document.getElementById('submenuMarketing').classList.toggle('hidden');
-      document.getElementById('setaMarketing').classList.toggle('rotate-180');
-    }
-
-    function navegarPara(view) {
-      ['home', 'base-leads', 'crm-kanban', 'chat-live'].forEach(id => {
-        document.getElementById(`view-${id}`).classList.add('hidden');
-        document.getElementById(`view-${id}`).classList.remove('block');
-      });
-
-      document.getElementById(`view-${view}`).classList.remove('hidden');
-      document.getElementById(`view-${view}`).classList.add('block');
-
-      const titulos = {
-        'home': 'Dashboard Pr
+  <footer class="mt-auto pt-8 text-xs text-slate-500">
+    Painel Sinapse &bull; Integrado via Supabase & WhatsApp Cloud API
+  </footer>
+</body>
+</html>
