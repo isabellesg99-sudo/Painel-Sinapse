@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sinapse Gestão - CRM & Disparos</title>
+  <title>Sinapse Gestão - Plataforma de Ativação</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script>
@@ -16,9 +17,11 @@
               magenta: '#C81B73',
               purple: '#8C1D74',
               blue: '#204596',
-              dark: '#0B0E14',
-              card: '#151923',
-              border: '#232A3B'
+              surface: '#F8FAFC',
+              card: '#FFFFFF',
+              border: '#E2E8F0',
+              textMain: '#0F172A',
+              textMuted: '#64748B'
             }
           }
         }
@@ -26,349 +29,327 @@
     }
   </script>
   <style>
-    /* Rolagem personalizada */
+    body { background-color: #F1F5F9; color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0B0E14; }
-    ::-webkit-scrollbar-thumb { background: #232A3B; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #C81B73; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
   </style>
 </head>
-<body class="bg-sinapse-dark text-slate-100 min-h-screen flex flex-col md:flex-row antialiased overflow-x-hidden font-sans">
+<body class="min-h-screen flex flex-col md:flex-row antialiased">
 
-  <!-- Overlay para Mobile -->
-  <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden"></div>
-
-  <!-- Sidebar Lateral -->
-  <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 bg-sinapse-card border-r border-sinapse-border flex flex-col justify-between p-4 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
-    <div>
-      <!-- Logo Marca -->
-      <div class="flex items-center gap-3 px-2 py-4 mb-4 border-b border-sinapse-border">
-        <div class="h-10 w-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-md">
+  <!-- ================= TELA DE LOGIN ================= -->
+  <div id="telaLogin" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4 z-50">
+    <div class="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-8 shadow-2xl relative">
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="h-16 w-16 rounded-2xl bg-slate-50 border border-slate-100 p-2 flex items-center justify-center shadow-sm mb-3">
           <svg viewBox="0 0 100 100" class="w-full h-full">
             <circle cx="50" cy="50" r="14" fill="#C81B73" />
             <circle cx="25" cy="30" r="7" fill="#204596" />
             <circle cx="75" cy="30" r="7" fill="#C81B73" />
             <circle cx="25" cy="70" r="7" fill="#C81B73" />
             <circle cx="75" cy="70" r="7" fill="#204596" />
-            <path d="M50 50 L25 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
+            <path d="M50 50 L25 30 M50 50 L75 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
           </svg>
         </div>
-        <div>
-          <h1 class="text-base font-black text-white leading-none">SINAPSE</h1>
-          <span class="text-[10px] text-sinapse-magenta font-bold tracking-widest uppercase">Gestão & CRM</span>
-        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900">Sinapse Gestão</h2>
+        <p class="text-xs text-slate-500 mt-1">Acesse sua central de ativações e resultados</p>
       </div>
 
-      <!-- Menu Itens -->
-      <nav class="space-y-1.5 text-xs font-semibold">
-        <button onclick="navegarPara('home')" id="btn-home" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-sinapse-magenta text-white transition-all shadow-md shadow-sinapse-magenta/20">
-          <i class="fa-solid fa-house text-sm w-4"></i>
-          <span>Home</span>
+      <form onsubmit="fazerLogin(event)" class="space-y-4 text-xs">
+        <div id="msgErro" class="hidden p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-center font-medium"></div>
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">E-mail</label>
+          <input type="email" id="loginEmail" required placeholder="sinapsegestao@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-sinapse-magenta focus:bg-white transition-all" />
+        </div>
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">Senha</label>
+          <input type="password" id="loginSenha" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-sinapse-magenta focus:bg-white transition-all" />
+        </div>
+        <button type="submit" id="btnEntrar" class="w-full py-3 rounded-xl bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white font-bold text-xs shadow-md shadow-sinapse-magenta/20 hover:opacity-95 transition-opacity">
+          Acessar Painel
         </button>
-
-        <!-- Dropdown Marketing -->
-        <div class="pt-1">
-          <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800/60 hover:text-white transition-colors">
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-bullhorn text-sm w-4 text-sinapse-magenta"></i>
-              <span>Marketing</span>
-            </div>
-            <i id="setaMarketing" class="fa-solid fa-chevron-down text-[10px] transition-transform"></i>
-          </button>
-          
-          <div id="submenuMarketing" class="pl-7 pr-2 py-1 space-y-1">
-            <button onclick="navegarPara('base-leads')" id="btn-base-leads" class="w-full text-left py-2 px-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 text-[11px] flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span> Base de Leads
-            </button>
-            <button onclick="navegarPara('crm-kanban')" id="btn-crm-kanban" class="w-full text-left py-2 px-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 text-[11px] flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span> CRM - Funil Kanban
-            </button>
-          </div>
-        </div>
-
-        <button onclick="navegarPara('chat-live')" id="btn-chat-live" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800/60 hover:text-white transition-colors">
-          <i class="fa-solid fa-comments text-sm w-4 text-sinapse-blue"></i>
-          <span>Chat Live</span>
-          <span class="ml-auto bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded text-[9px] font-bold">Online</span>
-        </button>
-      </nav>
-    </div>
-
-    <!-- Perfil Gestor no Rodapé -->
-    <div class="pt-4 border-t border-sinapse-border flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-sinapse-magenta to-sinapse-blue flex items-center justify-center font-bold text-xs text-white shadow-inner">
-          G
-        </div>
-        <div class="leading-tight">
-          <p class="text-xs font-bold text-white">Gestor</p>
-          <span class="text-[10px] text-slate-500">Administrador</span>
-        </div>
-      </div>
-      <button title="Sair" class="text-slate-400 hover:text-sinapse-magenta transition-colors"><i class="fa-solid fa-arrow-right-from-bracket text-xs"></i></button>
-    </div>
-  </aside>
-
-  <!-- Conteúdo Principal com Scroll Completo -->
-  <div class="flex-1 flex flex-col min-h-screen overflow-y-auto w-full">
-    
-    <!-- Top Header Bar -->
-    <header class="sticky top-0 bg-sinapse-dark/90 backdrop-blur-md border-b border-sinapse-border px-4 md:px-8 py-3.5 flex items-center justify-between z-20">
-      <div class="flex items-center gap-3">
-        <button onclick="toggleSidebar()" class="md:hidden text-slate-300 hover:text-white p-1">
-          <i class="fa-solid fa-bars text-lg"></i>
-        </button>
-        <span id="tituloHeader" class="text-sm md:text-base font-bold text-white">Dashboard</span>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          WhatsApp Conectado
-        </div>
-        <button class="h-8 w-8 rounded-full bg-sinapse-card border border-sinapse-border flex items-center justify-center text-slate-300 hover:text-white text-xs">
-          <i class="fa-regular fa-bell"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- CONTAINER DAS PÁGINAS -->
-    <div class="p-4 md:p-8 space-y-6 max-w-6xl w-full mx-auto">
-
-      <!-- ================= ABA HOME ================= -->
-      <section id="aba-home" class="space-y-6 block">
-        <!-- Saudação -->
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <span class="text-xs text-sinapse-magenta font-semibold flex items-center gap-1.5">
-              <i class="fa-regular fa-calendar"></i> Quinta-feira, 20 de Agosto
-            </span>
-            <h2 class="text-2xl font-black text-white mt-1">Olá, Gestor 👋</h2>
-            <p class="text-xs text-slate-400">Visão clara do desempenho comercial e oportunidades em movimento.</p>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="navegarPara('base-leads')" class="px-4 py-2 rounded-xl bg-sinapse-card border border-sinapse-border hover:bg-slate-800 text-xs font-bold text-slate-200 flex items-center gap-2">
-              <i class="fa-solid fa-users"></i> Leads
-            </button>
-            <button onclick="navegarPara('crm-kanban')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white text-xs font-bold shadow-lg shadow-sinapse-magenta/20 flex items-center gap-2">
-              <i class="fa-solid fa-chart-simple"></i> Abrir Funil ↗
-            </button>
-          </div>
-        </div>
-
-        <!-- Cards de Métricas Rápidas -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-lg">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total de Leads</span>
-              <div class="h-8 w-8 rounded-lg bg-sinapse-magenta/10 text-sinapse-magenta flex items-center justify-center text-sm">
-                <i class="fa-solid fa-user-group"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-black text-white">0</p>
-            <span class="text-[11px] text-slate-400 font-semibold mt-1 inline-block">+0 hoje</span>
-          </div>
-
-          <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-lg">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Vendas Fechadas</span>
-              <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-circle-check"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-black text-white">0</p>
-            <span class="text-[11px] text-slate-400 font-semibold mt-1 inline-block">0,0% conversão</span>
-          </div>
-
-          <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-lg">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Receita do Mês</span>
-              <div class="h-8 w-8 rounded-lg bg-sinapse-blue/20 text-blue-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-dollar-sign"></i>
-              </div>
-            </div>
-            <p class="text-3xl font-black text-white">R$ 0,00</p>
-            <span class="text-[11px] text-slate-400 font-semibold mt-1 inline-block">Mês atual</span>
-          </div>
-        </div>
-
-        <!-- Seção Gráfico com Filtro -->
-        <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-lg">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-sinapse-border">
-            <div>
-              <h3 class="font-bold text-base text-white flex items-center gap-2">
-                <i class="fa-solid fa-chart-line text-sinapse-magenta"></i> Desempenho Comercial
-              </h3>
-              <p class="text-xs text-slate-400">Acompanhe a evolução dos seus principais indicadores.</p>
-            </div>
-            <!-- Filtros de Período -->
-            <div class="flex bg-slate-900 p-1 rounded-xl border border-sinapse-border text-xs font-semibold">
-              <button onclick="mudarPeriodo(30)" id="btn-30d" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition-colors">30 dias</button>
-              <button onclick="mudarPeriodo(12)" id="btn-12m" class="px-3 py-1 rounded-lg bg-sinapse-magenta text-white shadow-sm transition-colors">12 meses</button>
-            </div>
-          </div>
-
-          <div class="h-64 w-full">
-            <canvas id="graficoDesempenho"></canvas>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ================= ABA BASE DE LEADS ================= -->
-      <section id="aba-base-leads" class="space-y-6 hidden">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 class="text-xl font-black text-white">Base de Leads & Contatos</h2>
-            <p class="text-xs text-slate-400">Gerencie todos os contatos cadastrados para ativações e envios.</p>
-          </div>
-          <button onclick="abrirModalLead()" class="px-4 py-2 rounded-xl bg-sinapse-magenta hover:bg-sinapse-purple text-white text-xs font-bold shadow-lg shadow-sinapse-magenta/20 flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Novo Lead
-          </button>
-        </div>
-
-        <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-lg overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="text-[11px] uppercase bg-slate-900 text-slate-400 font-bold tracking-wider">
-              <tr>
-                <th class="px-4 py-3 rounded-l-xl">Nome</th>
-                <th class="px-4 py-3">Telefone</th>
-                <th class="px-4 py-3">Origem</th>
-                <th class="px-4 py-3">Status WhatsApp</th>
-                <th class="px-4 py-3 rounded-r-xl text-right">Ação</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaLeadsCorpo" class="divide-y divide-sinapse-border">
-              <tr id="linhaVaziaLeads">
-                <td colspan="5" class="px-4 py-12 text-center text-slate-500">
-                  Nenhum lead cadastrado no momento. Clique em <strong>+ Novo Lead</strong> para adicionar.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-      <!-- ================= ABA CRM FUNIL KANBAN ================= -->
-      <section id="aba-crm-kanban" class="space-y-6 hidden">
-        <div>
-          <h2 class="text-xl font-black text-white">Funil de Vendas CRM</h2>
-          <p class="text-xs text-slate-400">Acompanhe as etapas de conversão dos clientes.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Coluna 1: Novos Leads -->
-          <div class="bg-slate-900/60 border border-sinapse-border rounded-2xl p-4 flex flex-col min-h-[300px]">
-            <div class="flex items-center justify-between mb-3 pb-2 border-b border-sinapse-border">
-              <span class="text-xs font-bold text-slate-300">Novos Leads</span>
-              <span id="count-novos" class="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-            </div>
-            <div id="colunaNovos" class="space-y-2 flex-1 flex flex-col justify-center items-center text-slate-600 text-xs">
-              Sem cartões nesta etapa.
-            </div>
-          </div>
-
-          <!-- Coluna 2: Em Ativação -->
-          <div class="bg-slate-900/60 border border-sinapse-border rounded-2xl p-4 flex flex-col min-h-[300px]">
-            <div class="flex items-center justify-between mb-3 pb-2 border-b border-sinapse-border">
-              <span class="text-xs font-bold text-amber-400">Em Ativação</span>
-              <span id="count-ativacao" class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-            </div>
-            <div id="colunaAtivacao" class="space-y-2 flex-1 flex flex-col justify-center items-center text-slate-600 text-xs">
-              Sem cartões nesta etapa.
-            </div>
-          </div>
-
-          <!-- Coluna 3: Convertidos -->
-          <div class="bg-slate-900/60 border border-sinapse-border rounded-2xl p-4 flex flex-col min-h-[300px]">
-            <div class="flex items-center justify-between mb-3 pb-2 border-b border-sinapse-border">
-              <span class="text-xs font-bold text-emerald-400">Convertidos</span>
-              <span id="count-convertidos" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-            </div>
-            <div id="colunaConvertidos" class="space-y-2 flex-1 flex flex-col justify-center items-center text-slate-600 text-xs">
-              Sem cartões nesta etapa.
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ================= ABA CHAT LIVE ================= -->
-      <section id="aba-chat-live" class="space-y-6 hidden">
-        <div>
-          <h2 class="text-xl font-black text-white">Chat Live WhatsApp</h2>
-          <p class="text-xs text-slate-400">Atendimento em tempo real com clientes conectados.</p>
-        </div>
-
-        <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-8 text-center text-slate-500">
-          <i class="fa-brands fa-whatsapp text-4xl text-emerald-400 mb-3 inline-block"></i>
-          <p class="text-sm font-semibold text-slate-300">Nenhuma conversa ativa no momento</p>
-          <p class="text-xs text-slate-500 mt-1">As mensagens enviadas e recebidas via WhatsApp aparecerão aqui.</p>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- Modal Cadastrar Lead -->
-  <div id="modalLead" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-sinapse-card border border-sinapse-border w-full max-w-md rounded-2xl p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4 pb-2 border-b border-sinapse-border">
-        <h3 class="font-bold text-white text-base">Adicionar Novo Lead</h3>
-        <button onclick="fecharModalLead()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="formNovoLead" onsubmit="salvarLead(event)" class="space-y-4 text-xs">
-        <div>
-          <label class="block text-slate-400 mb-1 font-semibold">Nome</label>
-          <input type="text" id="leadNome" required placeholder="Ex: Lucas Ferreira" class="w-full bg-slate-900 border border-sinapse-border rounded-lg p-2.5 text-white focus:outline-none focus:border-sinapse-magenta" />
-        </div>
-        <div>
-          <label class="block text-slate-400 mb-1 font-semibold">Telefone (com DDD)</label>
-          <input type="text" id="leadTelefone" required placeholder="Ex: 61988887777" class="w-full bg-slate-900 border border-sinapse-border rounded-lg p-2.5 text-white focus:outline-none focus:border-sinapse-magenta" />
-        </div>
-        <div>
-          <label class="block text-slate-400 mb-1 font-semibold">Origem</label>
-          <select id="leadOrigem" class="w-full bg-slate-900 border border-sinapse-border rounded-lg p-2.5 text-white focus:outline-none focus:border-sinapse-magenta">
-            <option value="TotalPass">TotalPass</option>
-            <option value="Wellhub">Wellhub</option>
-            <option value="Academia">Academia Direto</option>
-          </select>
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="fecharModalLead()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-sinapse-magenta hover:bg-sinapse-purple text-white font-bold rounded-lg shadow-md">Salvar Lead</button>
-        </div>
       </form>
     </div>
   </div>
 
-  <!-- SCRIPT DE NAVEGAÇÃO, GRÁFICOS E INTERAÇÃO -->
-  <script>
-    // Controle do Menu Mobile
-    function toggleSidebar() {
-      const sb = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      sb.classList.toggle('-translate-x-full');
-      overlay.classList.toggle('hidden');
-    }
+  <!-- ================= PAINEL PRINCIPAL ================= -->
+  <div id="painelSistema" class="hidden w-full min-h-screen flex flex-col md:flex-row">
+    
+    <!-- Sidebar Retrátil -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden"></div>
 
-    // Dropdown Marketing
-    function toggleMarketingMenu() {
-      const submenu = document.getElementById('submenuMarketing');
-      const seta = document.getElementById('setaMarketing');
-      submenu.classList.toggle('hidden');
-      seta.classList.toggle('rotate-180');
-    }
+    <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-4 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200">
+      <div>
+        <!-- Logo -->
+        <div class="flex items-center gap-3 px-2 py-3 mb-6 border-b border-slate-100">
+          <div class="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200/80 p-1 flex items-center justify-center shadow-xs">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="14" fill="#C81B73" />
+              <circle cx="25" cy="30" r="7" fill="#204596" />
+              <circle cx="75" cy="30" r="7" fill="#C81B73" />
+              <circle cx="25" cy="70" r="7" fill="#C81B73" />
+              <circle cx="75" cy="70" r="7" fill="#204596" />
+              <path d="M50 50 L25 30 M50 50 L75 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-sm font-black text-slate-900 tracking-tight">SINAPSE</h1>
+            <span class="text-[9px] text-sinapse-magenta font-bold tracking-wider uppercase">Inteligência Comercial</span>
+          </div>
+        </div>
 
-    // Navegação por Abas
-    function navegarPara(aba) {
-      // Fechar menu mobile ao clicar
-      document.getElementById('sidebar').classList.add('-translate-x-full');
-      document.getElementById('sidebarOverlay').classList.add('hidden');
+        <!-- Navegação Lateral -->
+        <nav class="space-y-1 text-xs font-semibold">
+          <button onclick="navegarPara('home')" id="btnNav-home" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-slate-100 text-slate-900 transition-colors">
+            <i class="fa-solid fa-chart-pie text-sm text-sinapse-magenta"></i>
+            <span>Dashboard</span>
+          </button>
 
-      // Ocultar todas as abas
-      const abas = ['home', 'base-leads', 'crm-kanban', 'chat-live'];
-      abas.forEach(id => {
-        document.getElementById(`aba-${id}`).classList.add('hidden');
-        document
+          <div>
+            <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bullhorn text-sm text-slate-400"></i>
+                <span>Marketing & CRM</span>
+              </div>
+              <i id="setaMarketing" class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform"></i>
+            </button>
+            <div id="submenuMarketing" class="pl-8 pr-2 py-1 space-y-1">
+              <button onclick="navegarPara('base-leads')" id="btnNav-base-leads" class="w-full text-left py-1.5 px-2.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
+                Base de Leads
+              </button>
+              <button onclick="navegarPara('crm-kanban')" id="btnNav-crm-kanban" class="w-full text-left py-1.5 px-2.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
+                Funil de Vendas (CRM)
+              </button>
+            </div>
+          </div>
+
+          <button onclick="navegarPara('chat-live')" id="btnNav-chat-live" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+            <i class="fa-solid fa-comments text-sm text-sinapse-blue"></i>
+            <span>Chat Live</span>
+            <span class="ml-auto bg-emerald-50 text-emerald-600 border border-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-bold">Online</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Footer Usuário -->
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="h-8 w-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-700">
+            G
+          </div>
+          <div class="leading-tight">
+            <p class="text-xs font-bold text-slate-800">Gestor</p>
+            <span id="labelUserEmail" class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
+          </div>
+        </div>
+        <button onclick="fazerLogout()" title="Sair" class="text-slate-400 hover:text-rose-500 transition-colors p-1"><i class="fa-solid fa-arrow-right-from-bracket text-xs"></i></button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Dinâmico -->
+    <div class="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      
+      <!-- Top Header -->
+      <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-3.5 flex items-center justify-between z-20">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-slate-900">
+            <i class="fa-solid fa-bars text-base"></i>
+          </button>
+          <h2 id="tituloPagina" class="text-sm md:text-base font-bold text-slate-900">Dashboard</h2>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            WhatsApp Oficial: <strong>+55 61 9829-0749</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="p-4 md:p-8 space-y-6 max-w-6xl w-full mx-auto flex-1">
+
+        <!-- ================= 1. DASHBOARD HOME ================= -->
+        <section id="view-home" class="space-y-6 block">
+          
+          <!-- Banner Superior & Boas-vindas -->
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                <i class="fa-regular fa-calendar text-sinapse-magenta"></i> Visão Operacional Diária
+              </span>
+              <h3 class="text-2xl font-extrabold text-slate-900 mt-1">Olá, Gestor 👋</h3>
+              <p class="text-xs text-slate-500">Acompanhamento em tempo real de ativações Wellhub e TotalPass.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="navegarPara('base-leads')" class="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 shadow-xs">
+                <i class="fa-solid fa-users text-slate-400 mr-1.5"></i> Leads
+              </button>
+              <button onclick="navegarPara('crm-kanban')" class="px-4 py-2 bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white rounded-xl text-xs font-bold shadow-sm shadow-sinapse-magenta/30 hover:opacity-95">
+                <i class="fa-solid fa-chart-simple mr-1.5"></i> Abrir Funil ↗
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Cards de Métricas (Estilo EVA) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase text-slate-400">Total de Leads</span>
+                <div class="h-8 w-8 rounded-xl bg-pink-50 text-sinapse-magenta flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-user-group"></i>
+                </div>
+              </div>
+              <p class="text-2xl font-black text-slate-900">0</p>
+              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2">
+                +0 hoje
+              </span>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase text-slate-400">Vendas Fechadas</span>
+                <div class="h-8 w-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+              </div>
+              <p class="text-2xl font-black text-slate-900">0</p>
+              <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-2">
+                0.0% conversão
+              </span>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase text-slate-400">Receita Estimada</span>
+                <div class="h-8 w-8 rounded-xl bg-blue-50 text-sinapse-blue flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+              </div>
+              <p class="text-2xl font-black text-slate-900">R$ 0,00</p>
+              <span class="text-[10px] font-semibold text-slate-400 block mt-2">Acumulado do mês</span>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase text-slate-400">Leads no Kanban</span>
+                <div class="h-8 w-8 rounded-xl bg-purple-50 text-sinapse-purple flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-table-columns"></i>
+                </div>
+              </div>
+              <p class="text-2xl font-black text-slate-900">0</p>
+              <span class="text-[10px] font-semibold text-slate-400 block mt-2">Oportunidades ativas</span>
+            </div>
+
+          </div>
+
+          <!-- Seção de Gráficos Duplos (Evolução Temporal + Distribuição de Canais) -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            
+            <!-- Gráfico 1: Evolução Comercial -->
+            <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900">Desempenho Comercial</h4>
+                  <p class="text-xs text-slate-400">Evolução dos principais indicadores</p>
+                </div>
+                <div class="flex bg-slate-100 p-1 rounded-xl text-[11px] font-semibold">
+                  <button onclick="mudarPeriodo(30)" id="btnPeriodo30" class="px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-900">30 dias</button>
+                  <button onclick="mudarPeriodo(12)" id="btnPeriodo12" class="px-2.5 py-1 rounded-lg bg-white text-slate-900 shadow-xs">12 meses</button>
+                </div>
+              </div>
+              <div class="h-56 w-full">
+                <canvas id="graficoLinha"></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfico 2: Canais de Aquisição -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+              <div class="pb-3 border-b border-slate-100">
+                <h4 class="font-bold text-sm text-slate-900">Canais de Aquisição</h4>
+                <p class="text-xs text-slate-400">Origem dos leads nos últimos 30 dias</p>
+              </div>
+              <div class="h-44 w-full flex items-center justify-center my-auto">
+                <canvas id="graficoRosca"></canvas>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="flex items-center gap-1.5 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</span>
+                <span class="font-bold text-slate-900">100%</span>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= 2. BASE DE LEADS ================= -->
+        <section id="view-base-leads" class="space-y-6 hidden">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">Base de Leads</h3>
+              <p class="text-xs text-slate-500">Lista completa de alunos integrados e prontos para ativação.</p>
+            </div>
+            <button onclick="abrirModalLead()" class="px-4 py-2 bg-gradient-to-r from-sinapse-magenta to-sinapse-purple text-white rounded-xl text-xs font-bold shadow-sm shadow-sinapse-magenta/30 hover:opacity-95">
+              <i class="fa-solid fa-plus mr-1"></i> Cadastrar Lead
+            </button>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 text-[11px] uppercase font-bold text-slate-400 tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="px-5 py-3.5">Nome do Aluno</th>
+                    <th class="px-5 py-3.5">WhatsApp</th>
+                    <th class="px-5 py-3.5">Origem</th>
+                    <th class="px-5 py-3.5">Status</th>
+                    <th class="px-5 py-3.5 text-right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaLeads" class="divide-y divide-slate-100 font-medium">
+                  <tr>
+                    <td colspan="5" class="px-5 py-12 text-center text-slate-400 text-xs">
+                      Nenhum lead registrado no banco. Clique em <strong>+ Cadastrar Lead</strong> para iniciar.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================= 3. CRM KANBAN ================= -->
+        <section id="view-crm-kanban" class="space-y-6 hidden">
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">Funil de Vendas & Ativação</h3>
+            <p class="text-xs text-slate-500">Arraste e acompanhe o status de conversão de cada oportunidade.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-100/80 border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[350px]">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+                <span class="text-xs font-bold text-slate-700">Novos Leads</span>
+                <span class="bg-white border border-slate-200 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+              </div>
+              <div class="flex-1 flex items-center justify-center text-xs text-slate-400">
+                Nenhum cartão nesta etapa
+              </div>
+            </div>
+
+            <div class="bg-slate-100/80 border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[350px]">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+                <span class="text-xs font-bold text-amber-700">Em Ativação</span>
+                <span class="bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+              </div>
+              <div class="flex-1 flex items-center justify-center text-xs text-slate-400">
+                Nenhum cartão nesta etapa
+              </div>
+            </div>
+
+            <div class="bg-slate-100/80 border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[350px]">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+                <span class="text-xs font-bold text-emerald-700">Convertidos</span>
+                <span class="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold px-2 py
