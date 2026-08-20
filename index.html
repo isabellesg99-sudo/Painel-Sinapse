@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sinapse Gestão</title>
+  <title>Sinapse Gestão - Plataforma Integrada</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -18,14 +18,14 @@
 <body class="min-h-screen bg-slate-50 antialiased">
 
   <div id="telaLogin" class="min-h-screen w-full flex items-center justify-center p-4">
-    <div class="w-full max-w-[400px] bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xl">
+    <div class="w-full max-w-[420px] bg-white border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-xl">
       
-      <div class="flex flex-col items-center text-center mb-6">
-        <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-[#C81B73] to-[#8C1D74] text-white font-black text-2xl flex items-center justify-center shadow-md mb-3">
+      <div class="flex flex-col items-center text-center mb-8">
+        <div class="h-16 w-16 rounded-2xl bg-gradient-to-tr from-[#C81B73] to-[#8C1D74] text-white font-black text-2xl flex items-center justify-center shadow-md mb-4">
           S
         </div>
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Sinapse Gestão</h1>
-        <p class="text-xs text-slate-500 mt-1">Aceda com o seu e-mail e palavra-passe</p>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Sinapse Gestão</h1>
+        <p class="text-xs text-slate-500 mt-1">Acesse com seu e-mail e senha cadastrados</p>
       </div>
 
       <div class="space-y-4 text-xs">
@@ -44,8 +44,8 @@
 
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label class="text-slate-700 font-bold">Palavra-passe</label>
-            <span class="text-[11px] font-semibold text-[#C81B73]">Esqueceu?</span>
+            <label class="text-slate-700 font-bold">Senha</label>
+            <span class="text-[11px] font-semibold text-[#C81B73] cursor-pointer hover:underline">Esqueceu?</span>
           </div>
           <div class="relative">
             <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400"></i>
@@ -60,77 +60,99 @@
 
         <button 
           type="button" 
-          onclick="document.getElementById('telaLogin').style.display='none'; document.getElementById('painelSistema').style.display='flex';"
+          onclick="document.getElementById('telaLogin').style.display='none'; document.getElementById('painelSistema').style.display='flex';" 
           class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C81B73] to-[#8C1D74] text-white font-bold text-xs shadow-md hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer">
           Entrar na Plataforma
         </button>
       </div>
 
-      <div class="text-center text-[11px] text-slate-400 mt-6 pt-4 border-t border-slate-100">
+      <div class="text-center text-[11px] text-slate-400 mt-8 pt-4 border-t border-slate-100">
         &copy; 2026 Sinapse Gestão. Todos os direitos reservados.
       </div>
     </div>
   </div>
 
   <div id="painelSistema" style="display: none;" class="min-h-screen bg-slate-50 flex-col w-full">
-    <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40">
+    
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
       <div class="flex items-center gap-3">
-        <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-[#C81B73] to-[#8C1D74] text-white font-black text-xs flex items-center justify-center">
+        <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-[#C81B73] to-[#8C1D74] text-white font-black text-sm flex items-center justify-center">
           S
         </div>
         <div>
-          <h2 class="text-xs sm:text-sm font-black text-slate-900 leading-none">SINAPSE GESTÃO</h2>
-          <span class="text-[9px] text-[#C81B73] font-bold">Central Operacional</span>
+          <h2 class="text-sm font-black text-slate-900 leading-none">SINAPSE GESTÃO</h2>
+          <span class="text-[10px] text-[#C81B73] font-bold">Central Operacional</span>
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold">
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
           <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Conectado
+          WhatsApp Oficial Conectado
         </div>
 
         <button 
-          type="button"
+          type="button" 
           onclick="document.getElementById('painelSistema').style.display='none'; document.getElementById('telaLogin').style.display='flex';" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-bold text-xs transition-colors cursor-pointer">
+          class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-bold text-xs transition-colors cursor-pointer">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
           <span>Sair</span>
         </button>
       </div>
     </header>
 
-    <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-5">
-      <div class="flex items-center justify-between">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 class="text-xl sm:text-2xl font-black text-slate-900">Visão Geral</h2>
-          <p class="text-xs text-slate-500">Gestão e acompanhamento operacional.</p>
+          <h2 class="text-2xl font-black text-slate-900">Visão Geral</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Acompanhamento das ativações, alunos e performance de disparos.</p>
         </div>
-        <button class="px-3.5 py-2 rounded-xl bg-[#C81B73] text-white font-bold text-xs shadow-sm hover:opacity-90 flex items-center gap-1.5">
-          <i class="fa-solid fa-plus text-[10px]"></i> Novo Envio
+        <button class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#C81B73] to-[#8C1D74] text-white font-bold text-xs shadow-sm hover:opacity-95 transition-all flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-plus"></i> Novo Envio
         </button>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs">
-          <span class="text-xs font-bold uppercase text-slate-400">Total de Alunos</span>
-          <p class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</p>
-          <span class="text-[10px] text-slate-400 mt-1 block">Base sincronizada</span>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Total de Alunos</span>
+            <i class="fa-solid fa-user-graduate text-slate-300 text-sm"></i>
+          </div>
+          <p class="text-3xl font-black text-slate-900">0</p>
+          <span class="text-[10px] text-slate-400 mt-2 block font-medium">Cadastrados na base</span>
         </div>
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs">
-          <span class="text-xs font-bold uppercase text-slate-400">Disparos Hoje</span>
-          <p class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">0</p>
-          <span class="text-[10px] text-emerald-600 font-semibold mt-1 block">Canal WhatsApp ativo</span>
+
+        <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Disparos Hoje</span>
+            <i class="fa-brands fa-whatsapp text-emerald-500 text-base"></i>
+          </div>
+          <p class="text-3xl font-black text-slate-900">0</p>
+          <span class="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2 inline-block font-semibold">Canal ativo</span>
         </div>
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs">
-          <span class="text-xs font-bold uppercase text-slate-400">Estado</span>
-          <p class="text-lg sm:text-xl font-black text-emerald-600 mt-1">100% Operacional</p>
-          <span class="text-[10px] text-slate-400 mt-1 block">Tudo sincronizado</span>
+
+        <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Status da Operação</span>
+            <i class="fa-solid fa-signal text-slate-300 text-sm"></i>
+          </div>
+          <p class="text-lg font-black text-emerald-600 mt-1">100% Operacional</p>
+          <span class="text-[10px] text-slate-400 mt-2 block font-medium">Sincronizado</span>
         </div>
       </div>
 
-      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs text-center text-xs text-slate-400">
-        Nenhum disparo pendente na fila no momento.
+      <div class="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">Fila de Disparos & Ativação</h3>
+            <p class="text-xs text-slate-400">Histórico de mensagens agendadas e enviadas</p>
+          </div>
+          <span class="text-xs font-semibold text-slate-400">0 registos</span>
+        </div>
+
+        <div class="p-10 text-center text-xs text-slate-400 font-medium">
+          Nenhum disparo na fila no momento.
+        </div>
       </div>
     </main>
   </div>
