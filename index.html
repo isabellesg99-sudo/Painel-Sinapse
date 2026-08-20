@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sinapse Gestão - Plataforma Integrada</title>
+  <title>Sinapse Gestão</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; color: #0F172A; }
   </style>
 </head>
@@ -61,7 +60,7 @@
 
         <button 
           type="button" 
-          id="btnEntrar"
+          onclick="document.getElementById('telaLogin').style.display='none'; document.getElementById('painelSistema').style.display='flex';"
           class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C81B73] to-[#8C1D74] text-white font-bold text-xs shadow-md hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer">
           Entrar na Plataforma
         </button>
@@ -73,8 +72,7 @@
     </div>
   </div>
 
-  <div id="painelSistema" class="hidden min-h-screen bg-slate-50 flex-col w-full">
-    
+  <div id="painelSistema" style="display: none;" class="min-h-screen bg-slate-50 flex-col w-full">
     <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40">
       <div class="flex items-center gap-3">
         <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-[#C81B73] to-[#8C1D74] text-white font-black text-xs flex items-center justify-center">
@@ -94,7 +92,7 @@
 
         <button 
           type="button"
-          id="btnSair"
+          onclick="document.getElementById('painelSistema').style.display='none'; document.getElementById('telaLogin').style.display='flex';" 
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 font-bold text-xs transition-colors cursor-pointer">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
           <span>Sair</span>
@@ -137,23 +135,5 @@
     </main>
   </div>
 
-  <script>
-    const telaLogin = document.getElementById('telaLogin');
-    const painelSistema = document.getElementById('painelSistema');
-    const btnEntrar = document.getElementById('btnEntrar');
-    const btnSair = document.getElementById('btnSair');
-
-    btnEntrar.addEventListener('click', function () {
-      telaLogin.style.display = 'none';
-      painelSistema.classList.remove('hidden');
-      painelSistema.style.display = 'flex';
-    });
-
-    btnSair.addEventListener('click', function () {
-      painelSistema.classList.add('hidden');
-      painelSistema.style.display = 'none';
-      telaLogin.style.display = 'flex';
-    });
-  </script>
 </body>
 </html>
