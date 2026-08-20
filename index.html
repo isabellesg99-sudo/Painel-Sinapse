@@ -3,78 +3,368 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Sinapse</title>
+  <title>Sinapse Gestão | Plataforma Comercial</title>
+  
+  <!-- Fontes & Estilos Externos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              magenta: '#C81B73',
+              purple: '#8C1D74',
+              blue: '#204596',
+              dark: '#0F172A',
+              muted: '#64748B',
+              border: '#E2E8F0',
+              surface: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0F172A; }
+    .custom-shadow { box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05); }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-6">
-  <header class="w-full max-w-4xl flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
-    <div class="flex items-center gap-3">
-      <div class="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30">
-        S
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-magenta selection:text-white">
+
+  <!-- ================= TELA DE LOGIN PROFISSIONAL ================= -->
+  <div id="telaLogin" class="fixed inset-0 bg-[#F8FAFC] flex flex-col items-center justify-center p-4 sm:p-6 z-50 overflow-y-auto">
+    <div class="w-full max-w-[420px] bg-white border border-slate-200/80 rounded-2xl p-8 sm:p-10 custom-shadow">
+      
+      <!-- Topo: Foto de Perfil Manual -->
+      <div class="flex flex-col items-center text-center mb-8">
+        <div class="h-16 w-16 rounded-full overflow-hidden border border-slate-200 shadow-sm mb-4 bg-slate-50 flex items-center justify-center">
+          <img id="loginAvatarManual" src="https://ui-avatars.com/api/?name=Sinapse+Gestao&background=C81B73&color=fff&size=128" alt="Sinapse" class="w-full h-full object-cover" />
+        </div>
+        <h1 class="text-xl font-bold tracking-tight text-slate-900">Entrar na plataforma</h1>
+        <p class="text-xs text-slate-500 mt-1">Digite suas credenciais de acesso ao Sinapse Gestão</p>
       </div>
-      <div>
-        <h1 class="text-xl font-bold tracking-tight">Painel Sinapse</h1>
-        <p class="text-xs text-slate-400">Gestão de Disparos & Alunos</p>
-      </div>
-    </div>
-    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-      Sistema Operacional
-    </span>
-  </header>
 
-  <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Total de Alunos</h2>
-      <p id="totalAlunos" class="text-3xl font-extrabold text-white">0</p>
-    </div>
+      <!-- Alerta de Erro -->
+      <div id="msgErro" class="hidden mb-5 p-3 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-xs font-medium text-center"></div>
 
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Disparos Hoje</h2>
-      <p id="disparosHoje" class="text-3xl font-extrabold text-indigo-400">0</p>
-    </div>
+      <form onsubmit="fazerLogin(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1.5">E-mail corporativo</label>
+          <div class="relative">
+            <i class="fa-regular fa-envelope absolute left-3.5 top-3 text-slate-400"></i>
+            <input type="email" id="loginEmail" value="sinapsegestao@gmail.com" required placeholder="gestao@sinapse.com" class="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-brand-magenta focus:bg-white transition-all" />
+          </div>
+        </div>
 
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Status do Canal</h2>
-      <p class="text-base font-semibold text-emerald-400 flex items-center gap-2 mt-1">
-        WhatsApp Oficial Ativo
-      </p>
-    </div>
+        <!-- Card de Sessão Recente -->
+        <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+          <div class="flex items-center justify-between text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-2">
+            <span>Acesso Rápido</span>
+            <span class="normal-case font-normal text-slate-400">Salvo neste navegador</span>
+          </div>
+          <div onclick="preencherLogin()" class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200/70 shadow-xs cursor-pointer hover:border-brand-magenta transition-all group">
+            <div class="flex items-center gap-3">
+              <div class="h-7 w-7 rounded-full overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-100">
+                <img src="https://ui-avatars.com/api/?name=GS&background=10B981&color=fff" alt="GS" class="w-full h-full object-cover" />
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-slate-800 group-hover:text-brand-magenta transition-colors">Gestor Sinapse</p>
+                <span class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-brand-magenta transition-colors"></i>
+          </div>
+        </div>
 
-    <section class="md:col-span-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-lg text-slate-200">Fila de Disparo</h3>
-        <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30">
-          + Novo Envio
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-slate-700 font-semibold">Senha</label>
+            <a href="#" class="text-[11px] font-medium text-brand-magenta hover:underline">Esqueci a senha</a>
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-400"></i>
+            <input type="password" id="loginSenha" value="SinapseGestao2016" required placeholder="••••••••" class="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-brand-magenta focus:bg-white transition-all" />
+          </div>
+        </div>
+
+        <button type="submit" id="btnEntrar" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-magenta to-brand-purple text-white font-semibold text-xs shadow-sm hover:opacity-95 active:scale-[0.99] transition-all">
+          Acessar Painel
         </button>
+      </form>
+
+      <div class="text-center text-[10px] text-slate-400 mt-8 pt-4 border-t border-slate-100">
+        &copy; 2026 Sinapse Inteligência Comercial. Todos os direitos reservados.
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DASHBOARD DO SISTEMA ================= -->
+  <div id="painelSistema" class="hidden min-h-screen bg-[#F8FAFC] flex-col md:flex-row w-full">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-slate-200 p-4 flex flex-col justify-between hidden md:flex min-h-screen">
+      <div class="space-y-6">
+        <!-- Logo Topo Lateral -->
+        <div class="flex items-center gap-3 px-2 py-1">
+          <div class="h-9 w-9 rounded-full overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-50">
+            <img src="https://ui-avatars.com/api/?name=Sinapse&background=C81B73&color=fff" alt="Sinapse" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <span class="text-xs font-black tracking-tight text-slate-900 block">SINAPSE</span>
+            <span class="text-[9px] text-brand-magenta font-semibold tracking-wider uppercase">Gestão & CRM</span>
+          </div>
+        </div>
+
+        <nav class="space-y-1 text-xs font-medium">
+          <button onclick="navegarPara('home')" id="btnNav-home" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl bg-slate-100 text-slate-900 font-semibold transition-all">
+            <i class="fa-solid fa-chart-pie text-brand-magenta text-sm"></i> Dashboard
+          </button>
+          
+          <div>
+            <button onclick="toggleMarketingMenu()" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bullhorn text-slate-400 text-sm"></i> Marketing & CRM
+              </div>
+              <i id="setaMarketing" class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform"></i>
+            </button>
+            <div id="submenuMarketing" class="pl-8 pr-2 py-1 space-y-1">
+              <button onclick="navegarPara('base-leads')" class="w-full text-left py-1.5 px-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
+                Base de Leads
+              </button>
+              <button onclick="navegarPara('crm-kanban')" class="w-full text-left py-1.5 px-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-50 text-[11px]">
+                Funil de Vendas (CRM)
+              </button>
+            </div>
+          </div>
+
+          <button onclick="navegarPara('chat-live')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+            <i class="fa-solid fa-comments text-brand-blue text-sm"></i> Live Chat
+            <span class="ml-auto bg-emerald-50 text-emerald-600 border border-emerald-200 px-1.5 py-0.5 rounded text-[9px] font-bold">Online</span>
+          </button>
+        </nav>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm text-slate-300">
-          <thead class="text-xs uppercase bg-slate-800/50 text-slate-400">
-            <tr>
-              <th class="px-4 py-3 rounded-l-lg">Nome</th>
-              <th class="px-4 py-3">Telefone</th>
-              <th class="px-4 py-3">Curso / Assunto</th>
-              <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3 rounded-r-lg text-right">Ação</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaCorpo" class="divide-y divide-slate-800">
-            <tr>
-              <td colspan="5" class="px-4 py-8 text-center text-slate-500">
-                Nenhum disparo na fila no momento.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Rodapé Perfil -->
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2.5">
+          <div class="h-8 w-8 rounded-full overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-50">
+            <img src="https://ui-avatars.com/api/?name=GS&background=10B981&color=fff" alt="Gestor" class="w-full h-full object-cover" />
+          </div>
+          <div class="leading-tight">
+            <p class="font-semibold text-slate-800">Gestor</p>
+            <span class="text-[10px] text-slate-400">sinapsegestao@gmail.com</span>
+          </div>
+        </div>
+        <button onclick="fazerLogout()" title="Sair" class="text-slate-400 hover:text-rose-500 transition-colors p-1"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
       </div>
-    </section>
-  </main>
+    </aside>
 
-  <footer class="mt-auto pt-8 text-xs text-slate-500">
-    Painel Sinapse &bull; Integrado via Supabase & WhatsApp Cloud API
-  </footer>
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div>
+          <h2 id="tituloPagina" class="text-xl font-bold tracking-tight text-slate-900">Dashboard</h2>
+          <p class="text-xs text-slate-500">Acompanhamento operacional em tempo real</p>
+        </div>
+        <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          WhatsApp Conectado
+        </div>
+      </div>
+
+      <!-- ABA HOME -->
+      <section id="view-home" class="space-y-6 block">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-semibold uppercase text-slate-400">Total de Leads</span>
+            <p class="text-2xl font-bold text-slate-900 mt-1">0</p>
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mt-2">+0 hoje</span>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-semibold uppercase text-slate-400">Vendas Fechadas</span>
+            <p class="text-2xl font-bold text-slate-900 mt-1">0</p>
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-2">0.0% conversão</span>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <span class="text-xs font-semibold uppercase text-slate-400">Receita Estimada</span>
+            <p class="text-2xl font-bold text-slate-900 mt-1">R$ 0,00</p>
+            <span class="text-[10px] font-medium text-slate-400 block mt-2">Acumulado do mês</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+            <h3 class="font-semibold text-xs text-slate-800 mb-4">Desempenho Comercial</h3>
+            <div class="h-56 w-full"><canvas id="graficoLinha"></canvas></div>
+          </div>
+          <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+            <h3 class="font-semibold text-xs text-slate-800 mb-4">Canais de Aquisição</h3>
+            <div class="h-44 w-full flex items-center justify-center my-auto"><canvas id="graficoRosca"></canvas></div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="flex items-center gap-1.5 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</span>
+              <span class="font-bold text-slate-900">100%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA BASE LEADS -->
+      <section id="view-base-leads" class="space-y-6 hidden">
+        <h3 class="text-lg font-bold text-slate-900">Base de Leads</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Nenhum lead cadastrado na base de dados.
+        </div>
+      </section>
+
+      <!-- ABA CRM KANBAN -->
+      <section id="view-crm-kanban" class="space-y-6 hidden">
+        <h3 class="text-lg font-bold text-slate-900">Funil de Vendas (CRM)</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Nenhuma oportunidade em andamento no momento.
+        </div>
+      </section>
+
+      <!-- ABA LIVE CHAT -->
+      <section id="view-chat-live" class="space-y-6 hidden">
+        <h3 class="text-lg font-bold text-slate-900">Live Chat WhatsApp</h3>
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-xs shadow-xs">
+          Nenhum atendimento em tempo real ativo.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://foyoweffnxccsatmfofb.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_34zjc5BFOXBtVfFktJeUDw_ouLbLHWW';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let chartLinha, chartRosca;
+
+    function preencherLogin() {
+      document.getElementById('loginEmail').value = 'sinapsegestao@gmail.com';
+      document.getElementById('loginSenha').value = 'SinapseGestao2016';
+    }
+
+    async function fazerLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginSenha').value;
+      const btn = document.getElementById('btnEntrar');
+      const msgErro = document.getElementById('msgErro');
+
+      btn.innerText = 'Entrando...';
+      btn.disabled = true;
+      msgErro.classList.add('hidden');
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        msgErro.innerText = 'E-mail ou senha inválidos.';
+        msgErro.classList.remove('hidden');
+        btn.innerText = 'Acessar Painel';
+        btn.disabled = false;
+      } else {
+        document.getElementById('telaLogin').classList.add('hidden');
+        document.getElementById('painelSistema').classList.remove('hidden');
+        document.getElementById('painelSistema').classList.add('flex');
+        inicializarGraficos();
+      }
+    }
+
+    async function fazerLogout() {
+      await supabase.auth.signOut();
+      document.getElementById('painelSistema').classList.add('hidden');
+      document.getElementById('painelSistema').classList.remove('flex');
+      document.getElementById('telaLogin').classList.remove('hidden');
+    }
+
+    function toggleMarketingMenu() {
+      document.getElementById('submenuMarketing').classList.toggle('hidden');
+      document.getElementById('setaMarketing').classList.toggle('rotate-180');
+    }
+
+    function navegarPara(view) {
+      ['home', 'base-leads', 'crm-kanban', 'chat-live'].forEach(id => {
+        document.getElementById(`view-${id}`).classList.add('hidden');
+        document.getElementById(`view-${id}`).classList.remove('block');
+      });
+
+      document.getElementById(`view-${view}`).classList.remove('hidden');
+      document.getElementById(`view-${view}`).classList.add('block');
+
+      const titulos = {
+        'home': 'Dashboard',
+        'base-leads': 'Marketing > Base de Leads',
+        'crm-kanban': 'Marketing > Funil de Vendas (CRM)',
+        'chat-live': 'Live Chat WhatsApp'
+      };
+      document.getElementById('tituloPagina').innerText = titulos[view];
+    }
+
+    function inicializarGraficos() {
+      const ctxLinha = document.getElementById('graficoLinha').getContext('2d');
+      chartLinha = new Chart(ctxLinha, {
+        type: 'line',
+        data: {
+          labels: ['Set', 'Out', 'Nov', 'Dez', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+          datasets: [{
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            borderColor: '#C81B73',
+            backgroundColor: 'rgba(200, 27, 115, 0.04)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 2,
+            pointBackgroundColor: '#C81B73'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { size: 10, family: 'Inter' } } },
+            y: { grid: { color: '#F1F5F9' }, ticks: { color: '#94A3B8', font: { size: 10, family: 'Inter' } }, beginAtZero: true }
+          }
+        }
+      });
+
+      const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
+      chartRosca = new Chart(ctxRosca, {
+        type: 'doughnut',
+        data: {
+          labels: ['WhatsApp'],
+          datasets: [{
+            data: [100],
+            backgroundColor: ['#10B981'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '75%',
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
