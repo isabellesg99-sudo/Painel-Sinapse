@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Sinapse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-6">
+  <header class="w-full max-w-4xl flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30">
+        S
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tight">Painel Sinapse</h1>
+        <p class="text-xs text-slate-400">Gestão de Disparos & Alunos</p>
+      </div>
+    </div>
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      Sistema Operacional
+    </span>
+  </header>
+
+  <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Total de Alunos</h2>
+      <p id="totalAlunos" class="text-3xl font-extrabold text-white">0</p>
+    </div>
+
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Disparos Hoje</h2>
+      <p id="disparosHoje" class="text-3xl font-extrabold text-indigo-400">0</p>
+    </div>
+
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Status do Canal</h2>
+      <p class="text-base font-semibold text-emerald-400 flex items-center gap-2 mt-1">
+        WhatsApp Oficial Ativo
+      </p>
+    </div>
+
+    <section class="md:col-span-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-lg text-slate-200">Fila de Disparo</h3>
+        <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30">
+          + Novo Envio
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-slate-300">
+          <thead class="text-xs uppercase bg-slate-800/50 text-slate-400">
+            <tr>
+              <th class="px-4 py-3 rounded-l-lg">Nome</th>
+              <th class="px-4 py-3">Telefone</th>
+              <th class="px-4 py-3">Curso / Assunto</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3 rounded-r-lg text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaCorpo" class="divide-y divide-slate-800">
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                Nenhum disparo na fila no momento.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-auto pt-8 text-xs text-slate-500">
+    Painel Sinapse &bull; Integrado via Supabase & WhatsApp Cloud API
+  </footer>
+</body>
+</html>
