@@ -3,68 +3,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Sinapse</title>
+  <title>Painel Sinapse Gestão</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sinapse: {
+              magenta: '#C81B73',
+              purple: '#8C1D74',
+              blue: '#204596',
+              dark: '#0D0F17',
+              card: '#161926',
+              border: '#23283B'
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center p-6">
-  <header class="w-full max-w-4xl flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+<body class="bg-sinapse-dark text-slate-100 min-h-screen flex flex-col items-center p-4 sm:p-6 antialiased">
+
+  <!-- Top Bar -->
+  <header class="w-full max-w-5xl flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-sinapse-magenta via-sinapse-purple to-sinapse-blue shadow-lg shadow-sinapse-magenta/20 mb-6">
     <div class="flex items-center gap-3">
-      <div class="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30">
-        S
+      <div class="h-11 w-11 rounded-xl bg-white p-1 flex items-center justify-center shadow-md">
+        <!-- Ícone representativo da logo Sinapse -->
+        <svg viewBox="0 0 100 100" class="w-full h-full text-sinapse-magenta">
+          <circle cx="50" cy="50" r="14" fill="#C81B73" />
+          <circle cx="25" cy="30" r="7" fill="#204596" />
+          <circle cx="75" cy="30" r="7" fill="#C81B73" />
+          <circle cx="25" cy="70" r="7" fill="#C81B73" />
+          <circle cx="75" cy="70" r="7" fill="#204596" />
+          <path d="M50 50 L25 30 M50 50 L75 30 M50 50 L25 70 M50 50 L75 70" stroke="#8C1D74" stroke-width="4" stroke-linecap="round"/>
+        </svg>
       </div>
       <div>
-        <h1 class="text-xl font-bold tracking-tight">Painel Sinapse</h1>
-        <p class="text-xs text-slate-400">Gestão de Disparos & Alunos</p>
+        <h1 class="text-xl font-black text-white tracking-tight">Painel Sinapse</h1>
+        <p class="text-xs text-white/80 font-medium">Gestão & Disparos WhatsApp</p>
       </div>
     </div>
-    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-      Sistema Operacional
-    </span>
+
+    <div class="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs font-semibold">
+      <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-slate-200">WhatsApp Oficial: <strong class="text-white">+55 61 9829-0749</strong></span>
+    </div>
   </header>
 
-  <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Total de Alunos</h2>
-      <p id="totalAlunos" class="text-3xl font-extrabold text-white">0</p>
+  <!-- Métricas Rápidas -->
+  <main class="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total de Leads / Alunos</span>
+        <div class="h-8 w-8 rounded-lg bg-sinapse-magenta/10 text-sinapse-magenta flex items-center justify-center text-sm">
+          <i class="fa-solid fa-users"></i>
+        </div>
+      </div>
+      <p id="totalAlunos" class="text-3xl font-black text-white">153</p>
+      <span class="text-[11px] text-emerald-400 font-semibold mt-1 inline-block">+152 novos hoje</span>
     </div>
 
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Disparos Hoje</h2>
-      <p id="disparosHoje" class="text-3xl font-extrabold text-indigo-400">0</p>
+    <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Disparos Hoje</span>
+        <div class="h-8 w-8 rounded-lg bg-sinapse-blue/20 text-blue-400 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-paper-plane"></i>
+        </div>
+      </div>
+      <p id="disparosHoje" class="text-3xl font-black text-white">10</p>
+      <span class="text-[11px] text-slate-400 font-semibold mt-1 inline-block">Limite seguro diário</span>
     </div>
 
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
-      <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">Status do Canal</h2>
-      <p class="text-base font-semibold text-emerald-400 flex items-center gap-2 mt-1">
-        WhatsApp Oficial Ativo
+    <div class="bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Status do Canal</span>
+        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+      </div>
+      <p class="text-lg font-bold text-emerald-400 flex items-center gap-1.5 mt-1">
+        <i class="fa-solid fa-circle-check text-base"></i> Conectado
       </p>
+      <span class="text-[11px] text-slate-400">Pronto para disparos via API</span>
     </div>
 
-    <section class="md:col-span-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-lg text-slate-200">Fila de Disparo</h3>
-        <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30">
-          + Novo Envio
+    <!-- Tabela de Disparos -->
+    <section class="sm:col-span-3 bg-sinapse-card border border-sinapse-border rounded-2xl p-5 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-3 border-b border-sinapse-border">
+        <div>
+          <h2 class="text-lg font-bold text-white">Fila de Disparo</h2>
+          <p class="text-xs text-slate-400">Selecione contatos para envio automático de mensagens</p>
+        </div>
+        <button class="px-4 py-2 bg-gradient-to-r from-sinapse-magenta to-sinapse-purple hover:opacity-95 transition-opacity text-white text-xs font-bold rounded-xl shadow-lg shadow-sinapse-magenta/25 flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Novo Envio
         </button>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm text-slate-300">
-          <thead class="text-xs uppercase bg-slate-800/50 text-slate-400">
+          <thead class="text-[11px] uppercase bg-slate-900/80 text-slate-400 font-bold tracking-wider">
             <tr>
-              <th class="px-4 py-3 rounded-l-lg">Nome</th>
+              <th class="px-4 py-3 rounded-l-xl">Nome</th>
               <th class="px-4 py-3">Telefone</th>
-              <th class="px-4 py-3">Curso / Assunto</th>
+              <th class="px-4 py-3">Origem</th>
               <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3 rounded-r-lg text-right">Ação</th>
+              <th class="px-4 py-3 rounded-r-xl text-right">Ação</th>
             </tr>
           </thead>
-          <tbody id="tabelaCorpo" class="divide-y divide-slate-800">
-            <tr>
-              <td colspan="5" class="px-4 py-8 text-center text-slate-500">
-                Nenhum disparo na fila no momento.
+          <tbody id="tabelaCorpo" class="divide-y divide-sinapse-border font-medium">
+            <tr class="hover:bg-slate-800/30 transition-colors">
+              <td class="px-4 py-3 font-semibold text-white">Aluno Teste 01</td>
+              <td class="px-4 py-3 text-slate-400">61 9829-0749</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-md bg-sinapse-blue/20 text-blue-300 text-xs">TotalPass</span></td>
+              <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Sucesso</span></td>
+              <td class="px-4 py-3 text-right">
+                <button class="text-xs text-sinapse-magenta hover:underline font-bold">Reenviar</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-800/30 transition-colors">
+              <td class="px-4 py-3 font-semibold text-white">Aluno Teste 02</td>
+              <td class="px-4 py-3 text-slate-400">61 9999-8888</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-md bg-sinapse-magenta/20 text-pink-300 text-xs">Wellhub</span></td>
+              <td class="px-4 py-3"><span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Pendente</span></td>
+              <td class="px-4 py-3 text-right">
+                <button class="px-3 py-1 bg-sinapse-magenta hover:bg-sinapse-purple text-white text-xs font-bold rounded-lg shadow-sm">Disparar</button>
               </td>
             </tr>
           </tbody>
@@ -73,8 +139,8 @@
     </section>
   </main>
 
-  <footer class="mt-auto pt-8 text-xs text-slate-500">
-    Painel Sinapse &bull; Integrado via Supabase & WhatsApp Cloud API
+  <footer class="mt-auto pt-6 pb-2 text-[11px] text-slate-500">
+    Sinapse Gestão &copy; Especialista em Ativação de Alunos (Wellhub & TotalPass)
   </footer>
 </body>
 </html>
